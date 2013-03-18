@@ -1,9 +1,19 @@
-@(project : ProjectModel)
+@(project : ProjectModel, flux : String)
 @main(project.getName()) {
 <div class="row-fluid marketing">
-	<div class="span12">
+	<div class="span8">
 		<h3>@project.getName()</h3>
 		<h4>created at @{new java.text.SimpleDateFormat("EEEE, d MMM yyyy HH:mm:ss").format(project.getDate)}</h4>
+		@Html(project.getDescription().replace(java.lang.System.getProperty("line.separator"), "<br/>"))
 	</div>
+	<div class="span3">
+		Project created by : <b>@project.getOwner().getUsername()</b><br/>
+		average mark : @project.averageNote()
+	</div>
+</div>
+<hr/>
+<div class="row-fluid marketing">
+	<h4>Commiter</h4>
+	@flux
 </div>
 }

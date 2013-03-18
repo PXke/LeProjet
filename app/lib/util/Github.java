@@ -17,11 +17,8 @@ public abstract class Github {
 	}
 	
 	public static String getDescription(String repourl, String branch) throws IOException	{
-		play.Logger.debug(repourl);
 		String tmp = repourl.replaceFirst("\\.git","/"+branch+"/README.md");
-		play.Logger.debug(tmp);
 		tmp = tmp.replaceFirst("https://github.com/", "https://raw.github.com/");
-		play.Logger.debug(tmp);
 		return getUrlSource(tmp);
 	}
 	
@@ -30,6 +27,12 @@ public abstract class Github {
 		String tmp = commitRSS.replace("{user}", user);
 		tmp = tmp.replace("{repo}", reponame);
 		tmp = tmp.replace("{branch}", branch);
+		return getUrlSource(tmp);
+	}
+	
+	public static String getFlux(String repourl, String branch) throws IOException	{
+		String tmp = repourl.replace(".git", "/commits/"+branch+".atom");
+		play.Logger.debug(tmp);
 		return getUrlSource(tmp);
 	}
 	

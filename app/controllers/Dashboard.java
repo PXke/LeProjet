@@ -112,6 +112,13 @@ public class Dashboard extends Controller {
 		if(pro.getOwner().getUsername().compareTo(user) != 0)	{
 			return redirect("/");
 		}
-		return ok(projectDescription.render(pro));
+		String flux;
+		try {
+			flux = Github.getFlux(pro.getGithubUrl(), pro.getBranch());
+		} catch (IOException e) {
+			flux = "";
+		}
+		
+		return ok(projectDescription.render(pro, flux));
 	}
 }

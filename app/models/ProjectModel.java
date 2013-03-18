@@ -1,5 +1,7 @@
 package models;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -10,6 +12,7 @@ import com.github.jmkgreen.morphia.annotations.Entity;
 import com.github.jmkgreen.morphia.annotations.Id;
 import com.github.jmkgreen.morphia.annotations.Reference;
 import com.github.jmkgreen.morphia.query.Query;
+import com.mongodb.util.Hash;
 
 import leodagdag.play2morphia.Model;
 
@@ -29,6 +32,10 @@ public class ProjectModel extends Model {
 	private List<UserModel> contributors;
 	private String description;
 	
+	public ProjectModel()	{
+		notes = new HashMap<String, Integer>();
+		contributors = new ArrayList<UserModel>();
+	}
 	
 	public static Finder<ObjectId, ProjectModel> finder = new Finder<ObjectId, ProjectModel>(ObjectId.class, ProjectModel.class);
 	
@@ -98,7 +105,10 @@ public class ProjectModel extends Model {
 		for(Entry<String, Integer> e : notes.entrySet()){
 			sum+= e.getValue();
 		}
-		return ((float)sum)/((float)notes.size());
+		if(notes.size() == 0)
+			return 0;
+		else
+			return ((float)sum)/((float)notes.size());
 	}
 
 	public String getName() {

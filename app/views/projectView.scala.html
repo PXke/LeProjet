@@ -1,4 +1,4 @@
 @(project : ProjectModel)
 <div class="row">
-	@project.getName()
+	<a href="/@project.getOwner().getUsername()/@project.getName()">@project.getName()</a>
 </div>
