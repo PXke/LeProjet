@@ -1,10 +1,33 @@
-@(error : String)
+@(error : String, me : UserModel,SortedListProject : List[ProjectModel])
 @main("Welcome to the project") {
-
 <div class="row-fluid marketing">
-	<div class="span12">
-		
+	<div class="span8">
+		@for(project <- SortedListProject)	{
+			@projectView(project)
+		}
+	</div>
+	<div class="span4">
+		@if(me.listOfMyProject().size() == 0)	{
+		<div class="alert alert-info">
+			<button type="button" class="close" data-dismiss="alert">&times;</button>
+			create your first project and work with hundreds of contributors.<br/>
+			<a href="/newproject">do it now!!!</a>
+		</div>
+		}
+		<div class="list-my-project">
+		<form class="form-search" onsubmit="return false;">
+		  <input type="text" class="input-mini search-query">
+		  <button type="submit" class="btn btn-mini">Search</button>
+		</form>
+		<hr/>
+		<table class="table table-striped">
+			@for(project <- me.listOfMyProject())	{
+			<tr>
+				<td><a href="/dashboard/@me.getUsername()/@project.getName()">@project.getName()<span class="arrow">></span></a></td>
+			</tr>
+			}
+		</table>
+		</div>
 	</div>
 </div>
-
 }

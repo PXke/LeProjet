@@ -37,3 +37,19 @@ body {
 .marketing p+h4 {
 	margin-top: 28px;
 }
+
+.list-my-project	{
+	-webkit-border-radius: 15px;
+	-moz-border-radius: 15px;
+	border-radius: 15px;
+	border: solid 1px;
+}
+
+dl.form {
+    display: inline;
+    float: left;
+}
+dl.form dt {
+    font-weight: bold;
+    margin-bottom:5px;
+}

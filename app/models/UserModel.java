@@ -1,5 +1,7 @@
 package models;
 
+import java.util.List;
+
 import org.bson.types.ObjectId;
 
 import com.github.jmkgreen.morphia.annotations.Entity;
@@ -67,5 +69,7 @@ public class UserModel extends Model {
 		this.email = email;
 	}
 
-	
+	public List<ProjectModel> listOfMyProject()	{
+		return ProjectModel.projectForUser(this);
+	}
 }
