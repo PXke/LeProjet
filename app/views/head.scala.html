@@ -1,0 +1,36 @@
+
+<div class="masthead">
+	@if(!session().containsKey("idUser"))	{
+	<ul class="nav nav-pills pull-right">
+		<li class="active"><a href="/">Home</a></li>
+		<li><a href="/about">About</a></li>
+		<li><a href="/contact">Contact</a></li>
+		<li class="dropdown"><a class="btn btn-info dropdown-toggle" data-toggle="dropdown" href="#">Sign in<b class="caret"></b></a>
+		    <ul class="dropdown-menu">	    	
+		    	<li class="span3">
+		    	<form class="form-horizontal" method="POST" action="/signin">
+		    	<div class="control-group">
+				  <input type="text" class="input" name="email" placeholder="Email or Username">
+				  <input type="password" class="input" name="password" placeholder="Password">
+				</div>
+				<div class="control-group">
+				  <button type="submit" class="btn btn-small">Sign in</button>
+				</div>
+				</form>
+				</li>		    	
+		    	<li class="span3">
+		    		<button class="btn btn-mini"><img src="@routes.Assets.at("images/github-octocat.png")" style="width:30px" /> Connect with GitHub</button>
+		    	</li>
+		    </ul>
+		</li>
+	</ul>
+	}else	{
+	<ul class="nav nav-pills pull-right">
+		<li class="active"><a href="/dashboard">Home</a></li>
+		<li><a href="/account">my account</a></li>
+		<li class="dropdown"><a href="/logout">logout</a></li>
+	</ul>
+	}
+	<h3 class="muted">The project</h3>
+</div>
+<hr>
