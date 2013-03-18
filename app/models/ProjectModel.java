@@ -12,7 +12,6 @@ import com.github.jmkgreen.morphia.annotations.Reference;
 import com.github.jmkgreen.morphia.query.Query;
 
 import leodagdag.play2morphia.Model;
-import leodagdag.play2morphia.Model.Finder;
 
 @Entity
 public class ProjectModel extends Model {
@@ -21,11 +20,14 @@ public class ProjectModel extends Model {
 	private ObjectId id;
 	private String githubUrl;
 	private String name;
+	private String branch;
+	private long date;
 	@Reference
 	private UserModel owner;
 	private Map<String, Integer> notes; 
 	@Reference
 	private List<UserModel> contributors;
+	private String description;
 	
 	
 	public static Finder<ObjectId, ProjectModel> finder = new Finder<ObjectId, ProjectModel>(ObjectId.class, ProjectModel.class);
@@ -38,6 +40,11 @@ public class ProjectModel extends Model {
 	public static ProjectModel findByName(String name)	{
 		Query<ProjectModel> query = finder.getDatastore().createQuery(ProjectModel.class);
 		return query.field("name").equal(name).get();
+	}
+	
+	public static ProjectModel findByUrl(String url)	{
+		Query<ProjectModel> query = finder.getDatastore().createQuery(ProjectModel.class);
+		return query.field("githubUrl").equal(url).get();
 	}
 	
 	public String id()	{
@@ -100,6 +107,30 @@ public class ProjectModel extends Model {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getBranch() {
+		return branch;
+	}
+
+	public void setBranch(String branch) {
+		this.branch = branch;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public long getDate() {
+		return date;
+	}
+
+	public void setDate(long date) {
+		this.date = date;
 	}
 	
 }

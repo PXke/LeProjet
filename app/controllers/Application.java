@@ -51,10 +51,10 @@ public class Application extends Controller {
     }
     
     public static Result signinperformed()	{
-    	DynamicForm signupForm = Form.form().bindFromRequest();
+    	DynamicForm signinForm = Form.form().bindFromRequest();
     	
-    	String emailOrUsername = signupForm.field("email").value();
-		String password = signupForm.field("password").value();
+    	String emailOrUsername = signinForm.field("email").value();
+		String password = signinForm.field("password").value();
 		String encodedPassword;
 		try {
 			encodedPassword = Hash.encode(password, "SHA-256");

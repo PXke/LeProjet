@@ -17,7 +17,13 @@ GET		/contact					controllers.Application.contact()
 GET		/dashboard					controllers.Dashboard.dashboard()
 GET		/account					controllers.Dashboard.account()
 
-GET	/newproject						controllers.Dashboard.newproject()
+GET		/newproject					controllers.Dashboard.newproject()
+POST	/newProjectForm				controllers.Dashboard.newProjectForm()
+
+GET		/$user<[a-zA-Z0-9]+>/$project<[a-zA-Z0-9]+> controllers.Dashboard.projectView(user : String, project : String) 
+
+POST	/lookForProjectName			controllers.Dashboard.lookForProjectName()
+POST	/lookForGithub				controllers.Dashboard.lookForGithub() 
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)

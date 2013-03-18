@@ -1,0 +1,9 @@
+@(project : ProjectModel)
+@main(project.getName()) {
+<div class="row-fluid marketing">
+	<div class="span12">
+		<h3>@project.getName()</h3>
+		<h4>created at @{new java.text.SimpleDateFormat("EEEE, d MMM yyyy HH:mm:ss").format(project.getDate)}</h4>
+	</div>
+</div>
+}

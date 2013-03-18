@@ -23,7 +23,9 @@
 		<table class="table table-striped">
 			@for(project <- me.listOfMyProject())	{
 			<tr>
-				<td><a href="/dashboard/@me.getUsername()/@project.getName()">@project.getName()<span class="arrow">></span></a></td>
+				<td style="cursor: pointer;" onclick='location.href="/@me.getUsername()/@project.getName()"'>
+					<a href="/@me.getUsername()/@project.getName()">@project.getName()<span class="arrow">></span></a>
+				</td>
 			</tr>
 			}
 		</table>

@@ -16,6 +16,15 @@ public abstract class Github {
 		return getUrlSource(tmp);
 	}
 	
+	public static String getDescription(String repourl, String branch) throws IOException	{
+		play.Logger.debug(repourl);
+		String tmp = repourl.replaceFirst("\\.git","/"+branch+"/README.md");
+		play.Logger.debug(tmp);
+		tmp = tmp.replaceFirst("https://github.com/", "https://raw.github.com/");
+		play.Logger.debug(tmp);
+		return getUrlSource(tmp);
+	}
+	
 	public static String commitRSS = "https://github.com/{user}/{repo}/commits/{branch}.atom";	
 	public static String getFlux(String user, String reponame, String branch) throws IOException	{
 		String tmp = commitRSS.replace("{user}", user);
@@ -30,8 +39,10 @@ public abstract class Github {
         BufferedReader in = new BufferedReader(new InputStreamReader(git.getInputStream(), "UTF-8"));
         String inputLine;
         StringBuilder a = new StringBuilder();
-        while ((inputLine = in.readLine()) != null)
-            a.append(inputLine);
+        String Newligne=System.getProperty("line.separator"); 
+        while ((inputLine = in.readLine()) != null)	{
+            a.append(inputLine+Newligne);
+        }
         in.close();
 
         return a.toString();

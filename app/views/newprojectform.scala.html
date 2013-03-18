@@ -2,35 +2,45 @@
 @main("Welcome to the project") {
 <div class="row-fluid marketing">
 	<div class="span12">
+		<form method="POST" action="/newProjectForm" id="newProject">
 		<div class="row">
 			<h1>Creating a new project</h1>
 		</div>
 		<div class="row">
-			<div span="12">
-			<dl class="form owner">
-        		<dt>Owner</dt>
-        		<dd>@me.getUsername()</dd>
-      		</dl>
-      		<dl class="form separator">
-      			<dt>/</dt>
-        		<dd>/</dd>
-      		</dl>
-      		<dl class="form project-name">
-        		<dt>Project name</dt>
-        		<dd><input type="text" id="projectName" /></dd>
-      		</dl>
+			<h4>Empty project</h4>
+			<div class="span6">
+				<dl class="form owner">
+	        		<dt>Owner</dt>
+	        		<dd>@me.getUsername()</dd>
+	      		</dl>
+	      		<dl class="form separator">
+	      			<dt>/</dt>
+	        		<dd>/</dd>
+	      		</dl>
+	      		<dl class="form project-name">
+	        		<dt>Project name</dt>
+	        		<dd><input type="text" name="projectName" id="projectName" onChange="lookForProjectName();" /></dd>
+	      		</dl>
       		</div>
+      		<div class="span5" id="state" style="margin-top:30px"></div>
 		</div>
 		<hr/>
 		<div class="row">
+			<h4>With a Github repository : </h4>
 			<div class="span12">
-			<label class="control-label" for="inputGithub">github repository : </label>
-			<input class="input-block-level" id="inputGithub" type="text" placeholder="" />
-			<label class="control-label" for="branch">branch to track : </label>
-			<input type="text" value="master" id="branch" />
-			<button class="btn btn-success btn-large">create project</button>
+				<label class="control-label" for="inputGithub">github repository : </label>
+				<input class="input-xxlarge" onchange="lookForGithub();" name="inputGithub"  id="inputGithub" type="text" placeholder="" />
+				
+				<label class="control-label" for="branch">branch to track : </label>
+				<input type="text" value="master" id="branch" name="branch" onchange="lookForGithub();" /><br/>
+				
+				<label class="control-label" for="descriptionArea">Description : </label>
+				<textarea rows="6" style="width:530px" onchange="validateForm();" id="descriptionArea" name="descriptionArea"></textarea><br/>
+				
+				<button class="btn btn-success btn-medium" id="github" disabled="disabled" onclick='$("#newProject").submit();'>create project</button>
 			</div>
 		</div>
+		</form>
 	</div>
 </div>
 }
