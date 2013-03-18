@@ -67,6 +67,9 @@ public class Application extends Controller {
 				}else	{
 					return ok(index.render("Unable to login with the information"));
 				}
+			}else	{
+				session().put("idUser", user.getId());
+				return redirect("/dashboard");
 			}
 		} catch (NoSuchAlgorithmException e) {
 			play.Logger.error("no such algorithme SHA-256");
