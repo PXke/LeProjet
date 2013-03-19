@@ -55,6 +55,11 @@ public class ProjectModel extends Model {
 		return query.field("followers").hasThisElement(user).asList();
 	}
 	
+	public static List<ProjectModel> allContributedBy(UserModel user)	{
+		Query<ProjectModel> query = finder.getDatastore().createQuery(ProjectModel.class);
+		return query.field("contributors").hasThisElement(user).asList();
+	}
+	
 	public ProjectModel()	{
 		contributors = new ArrayList<UserModel>();
 		followers = new ArrayList<UserModel>();
@@ -82,6 +87,14 @@ public class ProjectModel extends Model {
 	
 	public List<MarkModel> getNotes()	{
 		return MarkModel.allForProject(this);
+	}
+	
+	public boolean isContributor(UserModel user)	{
+		int i = 0;
+		while(i < contributors.size() && contributors.get(i).id().compareTo(user.id()) != 0)	{
+			i++;
+		}
+		return (i < contributors.size());
 	}
 
 	public List<UserModel> getContributors() {
@@ -146,6 +159,14 @@ public class ProjectModel extends Model {
 		this.date = date;
 	}
 
+	public boolean isFollowers(UserModel follower)	{
+		int i = 0;
+		while(i < followers.size() && followers.get(i).id().compareTo(follower.id()) != 0)	{
+			i++;
+		}
+		return (i < followers.size());
+	}
+	
 	public List<UserModel> getFollowers() {
 		return followers;
 	}

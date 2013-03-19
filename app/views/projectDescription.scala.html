@@ -1,4 +1,4 @@
-@(project : ProjectModel, flux : String)
+@(project : ProjectModel, me : UserModel)
 @main(project.getName())("oneproject"){
 <div class="row-fluid marketing">
 	<div class="span8">
@@ -18,6 +18,8 @@
 		}
 		</ul>
 		<input type="hidden" id="id" value="@project.id()" />
+		<button class="btn @if(me != null && project.isContributor(me)){btn-success}else{btn-primary}" id="contribut" type="button" onclick="@if(me != null && project.isContributor(me)){unsubscribe()}else{contribute()}">@if(me != null && project.isContributor(me)){unsubscribe}else{Contribute}</button>
+		<button class="btn @if(me != null && project.isFollowers(me)){btn-success}else{btn-primary}" id="follow" type="button" onclick="@if(me != null && project.isFollowers(me)){unfollow()}else{follow()}">@if(me != null && project.isFollowers(me)){unfollow}else{follow}</button>
 	</div>
 </div>
 <hr/>

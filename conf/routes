@@ -20,6 +20,12 @@ GET		/account					controllers.Dashboard.account()
 
 POST	/takeAMark					controllers.Dashboard.takAMark()
 
+POST	/contribute					controllers.Dashboard.contribute()
+POST	/unsubscribe				controllers.Dashboard.unsubscribe()
+
+POST	/follow						controllers.Dashboard.follow()
+POST	/unfollow					controllers.Dashboard.unfollow()
+
 GET		/newproject					controllers.Dashboard.newproject()
 POST	/newProjectForm				controllers.Dashboard.newProjectForm()
 

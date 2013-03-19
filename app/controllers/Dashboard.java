@@ -32,6 +32,7 @@ public class Dashboard extends Controller {
 		UserModel me = UserModel.finder.byId(new ObjectId(session("idUser")));
 		List<ProjectModel> all = ProjectModel.allFollowedBy(me);
 		all.addAll(ProjectModel.projectForUser(me));
+		all.addAll(ProjectModel.allContributedBy(me));
 		
 		ArrayList<Event> flux = new ArrayList<Event>();
 		for(ProjectModel pro : all)	{
@@ -146,6 +147,10 @@ public class Dashboard extends Controller {
 	}
 	
 	public static Result projectView(String user, String project)	{
+		UserModel me = null;
+		if (session().containsKey("idUser"))
+			me = UserModel.finder.byId(new ObjectId(session("idUser")));
+		
 		ProjectModel pro = ProjectModel.findByName(project);
 		if(pro.getOwner().getUsername().compareTo(user) != 0)	{
 			return redirect("/");
@@ -154,11 +159,9 @@ public class Dashboard extends Controller {
 		try {
 			flux = Github.getFlux(pro.getGithubUrl(), pro.getBranch());
 			Github.parseAndCreateCommitFlux(flux, pro);
-		} catch (IOException e) {
-			flux = "";
-		}
+		} catch (IOException e) {}
 		
-		return ok(projectDescription.render(pro, flux));
+		return ok(projectDescription.render(pro, me));
 	}
 	
 	public static Result takAMark()	{
@@ -192,6 +195,74 @@ public class Dashboard extends Controller {
 		}else	{
 			node.put("status", "fail");
 		}	
+		return ok(node);
+	}
+	
+	public static Result contribute()	{
+		UserModel me = UserModel.finder.byId(new ObjectId(session("idUser")));
+		DynamicForm form = Form.form().bindFromRequest();
+		String inputid = form.field("id").value();
+		ProjectModel pro = ProjectModel.finder.byId(new ObjectId(inputid));
+		
+		ObjectNode node = new ObjectNode(factory);
+		if(pro != null)	{
+			pro.addContributor(me);
+			pro.update();
+			node.put("status", "success");
+		}else	{
+			node.put("status", "fail");
+		}
+		return ok(node);
+	}
+	
+	public static Result unsubscribe()	{
+		UserModel me = UserModel.finder.byId(new ObjectId(session("idUser")));
+		DynamicForm form = Form.form().bindFromRequest();
+		String inputid = form.field("id").value();
+		ProjectModel pro = ProjectModel.finder.byId(new ObjectId(inputid));
+		
+		ObjectNode node = new ObjectNode(factory);
+		if(pro != null)	{
+			pro.delContributor(me);
+			pro.update();
+			node.put("status", "success");
+		}else	{
+			node.put("status", "fail");
+		}
+		return ok(node);
+	}
+	
+	public static Result follow()	{
+		UserModel me = UserModel.finder.byId(new ObjectId(session("idUser")));
+		DynamicForm form = Form.form().bindFromRequest();
+		String inputid = form.field("id").value();
+		ProjectModel pro = ProjectModel.finder.byId(new ObjectId(inputid));
+		
+		ObjectNode node = new ObjectNode(factory);
+		if(pro != null)	{
+			pro.addFollowersr(me);
+			pro.update();
+			node.put("status", "success");
+		}else	{
+			node.put("status", "fail");
+		}
+		return ok(node);
+	}
+	
+	public static Result unfollow()	{
+		UserModel me = UserModel.finder.byId(new ObjectId(session("idUser")));
+		DynamicForm form = Form.form().bindFromRequest();
+		String inputid = form.field("id").value();
+		ProjectModel pro = ProjectModel.finder.byId(new ObjectId(inputid));
+		
+		ObjectNode node = new ObjectNode(factory);
+		if(pro != null)	{
+			pro.delFollowers(me);
+			pro.update();
+			node.put("status", "success");
+		}else	{
+			node.put("status", "fail");
+		}
 		return ok(node);
 	}
 }
