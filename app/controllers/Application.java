@@ -62,13 +62,13 @@ public class Application extends Controller {
 			if(user == null)	{
 				user = UserModel.findByUsernamePass(emailOrUsername, encodedPassword);
 				if(user != null)	{
-					session().put("idUser", user.getId());
+					session().put("idUser", user.id());
 					return redirect("/dashboard");
 				}else	{
 					return ok(index.render("Unable to login with the information"));
 				}
 			}else	{
-				session().put("idUser", user.getId());
+				session().put("idUser", user.id());
 				return redirect("/dashboard");
 			}
 		} catch (NoSuchAlgorithmException e) {

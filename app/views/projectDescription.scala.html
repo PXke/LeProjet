@@ -1,5 +1,5 @@
 @(project : ProjectModel, flux : String)
-@main(project.getName()) {
+@main(project.getName())("oneproject"){
 <div class="row-fluid marketing">
 	<div class="span8">
 		<h3>@project.getName()</h3>
@@ -13,7 +13,19 @@
 </div>
 <hr/>
 <div class="row-fluid marketing">
-	<h4>Commiter</h4>
-	@flux
+	<h4>Commit</h4>
+	</div class="span12">
+	@for(commit <- project.getCommits())	{
+		<div class="row">
+			<div class="span8">
+				<img src="@commit.getGravatarUrl()" />
+				<a href="@commit.getInitiatorUri()">@commit.getInitiatorUsername()</a>
+			</div>
+			<div class="span12">
+				@commit.getCommitMessage()
+			</div>
+		</div>
+	}
+	<div>
 </div>
 }

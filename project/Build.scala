@@ -12,7 +12,8 @@ object ApplicationBuild extends Build {
     javaCore,
     //javaJdbc,
     //javaEbean,
-    "leodagdag" %% "play2-morphia-plugin"  % "0.0.14"
+    "leodagdag" %% "play2-morphia-plugin"  % "0.0.14",
+    "jdom" % "jdom" % "1.1"
   )
 
   val main = play.Project(appName, appVersion, appDependencies).settings(

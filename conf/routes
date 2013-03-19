@@ -15,6 +15,7 @@ GET		/about						controllers.Application.about()
 GET		/contact					controllers.Application.contact()
 
 GET		/dashboard					controllers.Dashboard.dashboard()
+GET		/explore					controllers.Dashboard.explore()
 GET		/account					controllers.Dashboard.account()
 
 GET		/newproject					controllers.Dashboard.newproject()

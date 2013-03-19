@@ -41,7 +41,7 @@ public class UserModel extends Model {
 		return query.field("username").equal(username).field("password").equal(password).get();
 	}
 	
-	public String getId() {
+	public String id() {
 		return id.toString();
 	}
 

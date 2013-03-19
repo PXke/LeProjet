@@ -1,4 +1,4 @@
-@(title: String)(content: Html)
+@(title: String)(namePage : String)(content: Html)
 
 <!DOCTYPE html>
 
@@ -31,7 +31,7 @@
     </head>
     <body>
     <div class="container-narrow">
-       @head()
+       @head(namePage)
        @content
        @foot()
     </div>

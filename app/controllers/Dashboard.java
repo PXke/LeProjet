@@ -1,6 +1,7 @@
 package controllers;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -9,6 +10,7 @@ import org.bson.types.ObjectId;
 import org.codehaus.jackson.node.JsonNodeFactory;
 import org.codehaus.jackson.node.ObjectNode;
 
+import lib.interfaces.Event;
 import lib.util.Github;
 import models.ProjectModel;
 import models.UserModel;
@@ -23,7 +25,37 @@ public class Dashboard extends Controller {
 
 	private static JsonNodeFactory factory = JsonNodeFactory.instance;
 
-	public static Result dashboard() {
+	public static Result dashboard()	{
+		if (!session().containsKey("idUser"))
+			return redirect("/");
+		UserModel me = UserModel.finder.byId(new ObjectId(session("idUser")));
+		List<ProjectModel> all = ProjectModel.allFollowedBy(me);
+		all.addAll(ProjectModel.projectForUser(me));
+		
+		ArrayList<Event> flux = new ArrayList<Event>();
+		for(ProjectModel pro : all)	{
+			try {
+				String xml = Github.getFlux(pro.getGithubUrl(), pro.getBranch());
+				Github.parseAndCreateCommitFlux(xml, pro);
+			} catch (IOException e) {}
+			
+			flux.addAll(pro.getCommits());
+			flux.addAll(pro.getNotes());
+		}
+		Collections.sort(flux, new Comparator<Event>() {
+			@Override
+			public int compare(Event o1, Event o2) {
+				if (o1.getDate() < o2.getDate())
+					return -1;
+				else
+					return 1;
+			}
+		});
+		
+		return ok(dashboard.render(flux, me));
+	}
+	
+	public static Result explore() {
 		if (!session().containsKey("idUser"))
 			return redirect("/");
 
@@ -39,8 +71,7 @@ public class Dashboard extends Controller {
 			}
 		});
 
-		return ok(dashboard.render("",
-				UserModel.finder.byId(new ObjectId(session("idUser"))), lst));
+		return ok(explore.render("",UserModel.finder.byId(new ObjectId(session("idUser"))), lst));
 	}
 
 	public static Result account() {
@@ -101,6 +132,12 @@ public class Dashboard extends Controller {
 			project.setDescription(descriptionArea);
 			project.setDate(System.currentTimeMillis());
 			project.insert();
+			
+			try {
+				String flux = Github.getFlux(project.getGithubUrl(), project.getBranch());
+				Github.parseAndCreateCommitFlux(flux, project);
+			} catch (IOException e) {}
+			
 			return redirect("/"+user.getUsername()+"/"+projectName);
 		}else	{
 			return ok(newprojectform.render(user));
@@ -115,6 +152,7 @@ public class Dashboard extends Controller {
 		String flux;
 		try {
 			flux = Github.getFlux(pro.getGithubUrl(), pro.getBranch());
+			Github.parseAndCreateCommitFlux(flux, pro);
 		} catch (IOException e) {
 			flux = "";
 		}

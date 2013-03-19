@@ -1,10 +1,7 @@
 package models;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 
 import org.bson.types.ObjectId;
 
@@ -12,7 +9,6 @@ import com.github.jmkgreen.morphia.annotations.Entity;
 import com.github.jmkgreen.morphia.annotations.Id;
 import com.github.jmkgreen.morphia.annotations.Reference;
 import com.github.jmkgreen.morphia.query.Query;
-import com.mongodb.util.Hash;
 
 import leodagdag.play2morphia.Model;
 
@@ -27,15 +23,14 @@ public class ProjectModel extends Model {
 	private long date;
 	@Reference
 	private UserModel owner;
-	private Map<String, Integer> notes; 
 	@Reference
 	private List<UserModel> contributors;
-	private String description;
+	@Reference
+	private List<UserModel> followers;
+	@Reference
+	private List<MarkModel> notes;
 	
-	public ProjectModel()	{
-		notes = new HashMap<String, Integer>();
-		contributors = new ArrayList<UserModel>();
-	}
+	private String description;
 	
 	public static Finder<ObjectId, ProjectModel> finder = new Finder<ObjectId, ProjectModel>(ObjectId.class, ProjectModel.class);
 	
@@ -52,6 +47,17 @@ public class ProjectModel extends Model {
 	public static ProjectModel findByUrl(String url)	{
 		Query<ProjectModel> query = finder.getDatastore().createQuery(ProjectModel.class);
 		return query.field("githubUrl").equal(url).get();
+	}
+	
+	public static List<ProjectModel> allFollowedBy(UserModel user)	{
+		Query<ProjectModel> query = finder.getDatastore().createQuery(ProjectModel.class);
+		return query.field("followers").hasThisElement(user).asList();
+	}
+	
+	public ProjectModel()	{
+		notes = new ArrayList<MarkModel>();
+		contributors = new ArrayList<UserModel>();
+		followers = new ArrayList<UserModel>();
 	}
 	
 	public String id()	{
@@ -74,12 +80,12 @@ public class ProjectModel extends Model {
 		this.owner = owner;
 	}
 	
-	public Map<String, Integer> getNotes()	{
+	public List<MarkModel> getNotes()	{
 		return notes;
 	}
 	
-	public void addNote(UserModel user, int note)	{
-		notes.put(user.getId(), note);
+	public void addNote(MarkModel mark)	{
+		notes.add(mark);
 	}
 
 	public List<UserModel> getContributors() {
@@ -92,7 +98,7 @@ public class ProjectModel extends Model {
 	
 	public void delContributor(UserModel contributor)	{
 		int i = 0;
-		while(i < contributors.size() && contributors.get(i).getId().compareTo(contributor.getId()) != 0)	{
+		while(i < contributors.size() && contributors.get(i).id().compareTo(contributor.id()) != 0)	{
 			i++;
 		}
 		if(i < contributors.size())	{
@@ -102,8 +108,8 @@ public class ProjectModel extends Model {
 	
 	public float averageNote()	{
 		int sum = 0;
-		for(Entry<String, Integer> e : notes.entrySet()){
-			sum+= e.getValue();
+		for(MarkModel e : notes){
+			sum+= e.getMark();
 		}
 		if(notes.size() == 0)
 			return 0;
@@ -141,6 +147,28 @@ public class ProjectModel extends Model {
 
 	public void setDate(long date) {
 		this.date = date;
+	}
+
+	public List<UserModel> getFollowers() {
+		return followers;
+	}
+
+	public void addFollowersr(UserModel follower) {
+		this.followers.add( follower );
+	}
+	
+	public void delFollowers(UserModel follower)	{
+		int i = 0;
+		while(i < followers.size() && followers.get(i).id().compareTo(follower.id()) != 0)	{
+			i++;
+		}
+		if(i < followers.size())	{
+			followers.remove(i);
+		}
+	}
+	
+	public List<CommitModel> getCommits()	{
+		return CommitModel.allForProject(this);
 	}
 	
 }

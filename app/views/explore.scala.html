@@ -1,10 +1,9 @@
-@(list : List[lib.interfaces.Event], me : UserModel)
-
-@main("Welcome to the project")("dashboard"){
+@(error : String, me : UserModel,SortedListProject : List[ProjectModel])
+@main("Welcome to the project")("explore"){
 <div class="row-fluid marketing">
 	<div class="span8">
-		@for(event <- list)	{
-			@eventView(event)
+		@for(project <- SortedListProject)	{
+			@projectView(project)
 		}
 	</div>
 	<div class="span4">
