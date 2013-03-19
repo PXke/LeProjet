@@ -26,12 +26,12 @@
 	</ul>
 	}else	{
 	<ul class="nav nav-pills pull-right">
-		<li @if(namePage.compareTo("dashboard") == 0){class="active"}><a href="/dashboard">Home</a></li>
+		<li @if(namePage.compareTo("dashboard") == 0){class="active"}><a href="/dashboard">Dashboard</a></li>
 		<li @if(namePage.compareTo("explore") == 0){class="active"}><a href="/explore">explore</a></li>
 		<li @if(namePage.compareTo("account") == 0){class="active"}><a href="/account">my account</a></li>
 		<li class="dropdown"><a href="/logout">logout</a></li>
 	</ul>
 	}
-	<h3 class="muted">The project</h3>
+	<h3 class="muted"><a href="/@if(session().containsKey("idUser")){dashboard}">The project</a></h3>
 </div>
 <hr>

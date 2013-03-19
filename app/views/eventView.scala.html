@@ -1,1 +1,16 @@
 @(event : lib.interfaces.Event)
+<div class="row">
+
+	@if(event.isInstanceOf[CommitModel]) {
+	<div class="span8">
+		<img src="@event.asInstanceOf[CommitModel].getGravatarUrl()" /> 
+		<a href="@event.asInstanceOf[CommitModel].getInitiatorUri()">@event.asInstanceOf[CommitModel].getInitiatorUsername()</a>
+	</div>
+	<div class="span12">@event.asInstanceOf[CommitModel].getCommitMessage()</div>
+	}else  {
+	<div class="span8">
+		<a href="">@event.getInitiatorUsername()</a>
+	</div>
+	<div class="span12">@Html(event.getShortDescription())</div>
+	}
+</div>

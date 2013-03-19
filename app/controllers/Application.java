@@ -46,7 +46,8 @@ public class Application extends Controller {
 			}
 	    	user.setUsername(inputUsername);
 	    	user.insert();
-	    	return ok();
+	    	session().put("idUser", user.id());
+			return redirect("/dashboard");
 		}
     }
     

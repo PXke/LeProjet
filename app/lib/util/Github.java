@@ -105,9 +105,6 @@ public abstract class Github {
 				Element title = courant.getChild("title", space);
 				
 				Element media = courant.getChild("thumbnail", Namespace.getNamespace("http://search.yahoo.com/mrss/"));
-				for(Object o : media.getAttributes())
-					play.Logger.debug(o.toString());
-				play.Logger.debug(media.getAttributeValue("url"));
 				Element authorname = courant.getChild("author", space).getChild("name", space);
 				Element authorurl = courant.getChild("author", space).getChild("uri", space);
 				String[] tab = id.getText().split(":");

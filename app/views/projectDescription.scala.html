@@ -8,13 +8,22 @@
 	</div>
 	<div class="span3">
 		Project created by : <b>@project.getOwner().getUsername()</b><br/>
-		average mark : @project.averageNote()
+		average mark : <span id="averageNote">@project.averageNote()</span><br/>
+		<ul class="notes-echelle">
+		@for(i <- 1 to MarkModel.baseMark)	{
+			<li>
+				<label class="starsclickable" for="note@i" title="Note&nbsp;: @i sur @MarkModel.baseMark">@i</label>
+				<input type="radio" name="notesA" id="note@i" value="@i" />
+			</li>
+		}
+		</ul>
+		<input type="hidden" id="id" value="@project.id()" />
 	</div>
 </div>
 <hr/>
 <div class="row-fluid marketing">
 	<h4>Commit</h4>
-	</div class="span12">
+	<div class="span12">
 	@for(commit <- project.getCommits())	{
 		<div class="row">
 			<div class="span8">
@@ -26,6 +35,6 @@
 			</div>
 		</div>
 	}
-	<div>
+	</div>
 </div>
 }

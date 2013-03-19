@@ -12,6 +12,7 @@ import org.codehaus.jackson.node.ObjectNode;
 
 import lib.interfaces.Event;
 import lib.util.Github;
+import models.MarkModel;
 import models.ProjectModel;
 import models.UserModel;
 import play.*;
@@ -46,9 +47,9 @@ public class Dashboard extends Controller {
 			@Override
 			public int compare(Event o1, Event o2) {
 				if (o1.getDate() < o2.getDate())
-					return -1;
-				else
 					return 1;
+				else
+					return -1;
 			}
 		});
 		
@@ -158,5 +159,39 @@ public class Dashboard extends Controller {
 		}
 		
 		return ok(projectDescription.render(pro, flux));
+	}
+	
+	public static Result takAMark()	{
+		UserModel me = UserModel.finder.byId(new ObjectId(session("idUser")));
+		DynamicForm form = Form.form().bindFromRequest();
+		String inputmark = form.field("mark").value();
+		String inputid = form.field("pro").value();
+		ProjectModel pro = ProjectModel.finder.byId(new ObjectId(inputid));
+		
+		ObjectNode node = new ObjectNode(factory);
+		
+		if(pro != null)	{
+			MarkModel mark = MarkModel.forProjectAndUser(pro, me);
+			if(mark == null)	{
+				play.Logger.debug("null");
+				mark = new MarkModel();
+				mark.setOwner(me);
+				mark.setProject(pro);
+				mark.setMark(Integer.parseInt(inputmark));
+				mark.setDate(System.currentTimeMillis());
+				mark.insert();
+			}else	{
+				play.Logger.debug("not null");
+				mark.setMark(Integer.parseInt(inputmark));
+				mark.setDate(System.currentTimeMillis());
+				mark.update();
+			}
+				
+			node.put("status", "success");
+			node.put("average", pro.averageNote());
+		}else	{
+			node.put("status", "fail");
+		}	
+		return ok(node);
 	}
 }

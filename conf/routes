@@ -18,6 +18,8 @@ GET		/dashboard					controllers.Dashboard.dashboard()
 GET		/explore					controllers.Dashboard.explore()
 GET		/account					controllers.Dashboard.account()
 
+POST	/takeAMark					controllers.Dashboard.takAMark()
+
 GET		/newproject					controllers.Dashboard.newproject()
 POST	/newProjectForm				controllers.Dashboard.newProjectForm()
 

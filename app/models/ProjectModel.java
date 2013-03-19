@@ -1,6 +1,8 @@
 package models;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import org.bson.types.ObjectId;
@@ -11,6 +13,7 @@ import com.github.jmkgreen.morphia.annotations.Reference;
 import com.github.jmkgreen.morphia.query.Query;
 
 import leodagdag.play2morphia.Model;
+import lib.interfaces.Event;
 
 @Entity
 public class ProjectModel extends Model {
@@ -27,8 +30,6 @@ public class ProjectModel extends Model {
 	private List<UserModel> contributors;
 	@Reference
 	private List<UserModel> followers;
-	@Reference
-	private List<MarkModel> notes;
 	
 	private String description;
 	
@@ -55,7 +56,6 @@ public class ProjectModel extends Model {
 	}
 	
 	public ProjectModel()	{
-		notes = new ArrayList<MarkModel>();
 		contributors = new ArrayList<UserModel>();
 		followers = new ArrayList<UserModel>();
 	}
@@ -81,11 +81,7 @@ public class ProjectModel extends Model {
 	}
 	
 	public List<MarkModel> getNotes()	{
-		return notes;
-	}
-	
-	public void addNote(MarkModel mark)	{
-		notes.add(mark);
+		return MarkModel.allForProject(this);
 	}
 
 	public List<UserModel> getContributors() {
@@ -108,13 +104,14 @@ public class ProjectModel extends Model {
 	
 	public float averageNote()	{
 		int sum = 0;
-		for(MarkModel e : notes){
+		List<MarkModel> marks = getNotes();
+		for(MarkModel e : marks){
 			sum+= e.getMark();
 		}
-		if(notes.size() == 0)
+		if(marks.size() == 0)
 			return 0;
 		else
-			return ((float)sum)/((float)notes.size());
+			return ((float)sum)/((float)marks.size());
 	}
 
 	public String getName() {
@@ -168,7 +165,17 @@ public class ProjectModel extends Model {
 	}
 	
 	public List<CommitModel> getCommits()	{
-		return CommitModel.allForProject(this);
+		List<CommitModel> lst = CommitModel.allForProject(this);
+		Collections.sort(lst, new Comparator<Event>() {
+			@Override
+			public int compare(Event o1, Event o2) {
+				if (o1.getDate() < o2.getDate())
+					return 1;
+				else
+					return -1;
+			}
+		});
+		return lst;
 	}
 	
 }

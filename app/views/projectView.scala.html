@@ -1,4 +1,9 @@
 @(project : ProjectModel)
+@* this will be on a span8*@
 <div class="row">
-	<a href="/@project.getOwner().getUsername()/@project.getName()">@project.getName()</a>
+	<div class="span4"><a href="/@project.getOwner().getUsername()/@project.getName()">@project.getName()</a></div>
+	<div class="span3 offset1">@project.averageNote()/@MarkModel.baseMark</div>
+	<div class="span8">
+		Short description
+	</div>
 </div>

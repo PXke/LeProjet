@@ -57,3 +57,37 @@ dl.form dt {
 .arrow	{
 	float:right;
 }
+
+ul.notes-echelle {
+	margin:0;
+	padding:0;
+	font:.75em/1.2 Arial, Helvetica, sans-serif;
+}
+ul.notes-echelle li {
+	float:left;
+	margin:0;
+	padding:0;
+	list-style:none;
+	min-width:20px;
+	min-height:20px;
+}
+/* Correctif IE6 sur min-width & min-height */
+* html ul.notes-echelle.js li {
+	width:20px;
+	height:20px;
+}
+ul.notes-echelle li label {
+	display:block;
+	text-align:center;
+	line-height:20px;
+	background:url("/assets/images/etoiles.gif") center top no-repeat;
+	cursor:pointer;
+}
+ul.notes-echelle li.note-off label {
+	background-position:center -60px;
+}
+
+ul.notes-echelle.js input {
+	position:absolute;
+	left:-999%;
+}
