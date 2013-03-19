@@ -4,7 +4,7 @@
 	@if(event.isInstanceOf[CommitModel]) {
 	<div class="span8">
 		<img src="@event.asInstanceOf[CommitModel].getGravatarUrl()" /> 
-		<a href="@event.asInstanceOf[CommitModel].getInitiatorUri()">@event.asInstanceOf[CommitModel].getInitiatorUsername()</a>
+		<a href="@event.asInstanceOf[CommitModel].getInitiatorUri()">@event.asInstanceOf[CommitModel].getInitiatorUsername()</a> commit on <a href="/@event.asInstanceOf[CommitModel].getProject().getOwner().getUsername()/@event.asInstanceOf[CommitModel].getProject().getName()">@event.asInstanceOf[CommitModel].getProject().getName()</a>
 	</div>
 	<div class="span12">@event.asInstanceOf[CommitModel].getCommitMessage()</div>
 	}else  {
