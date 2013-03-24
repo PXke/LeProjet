@@ -16,16 +16,17 @@
 				<input type="radio" name="notesA" id="note@i" value="@i" />
 			</li>
 		}
-		</ul>
+		</ul><br/>
 		<input type="hidden" id="id" value="@project.id()" />
-		<button class="btn @if(me != null && project.isContributor(me)){btn-success}else{btn-primary}" id="contribut" type="button" onclick="@if(me != null && project.isContributor(me)){unsubscribe()}else{contribute()}">@if(me != null && project.isContributor(me)){unsubscribe}else{Contribute}</button>
+		<button class="btn @if(me != null && project.isContributor(me)){btn-success}else{btn-primary}" id="contribut" type="button" onclick="@if(me != null && project.isContributor(me)){unsubscribe()}else{contribute()}">@if(me != null && project.isContributor(me)){unsubscribe}else{Contribute}</button><br/>
 		<button class="btn @if(me != null && project.isFollowers(me)){btn-success}else{btn-primary}" id="follow" type="button" onclick="@if(me != null && project.isFollowers(me)){unfollow()}else{follow()}">@if(me != null && project.isFollowers(me)){unfollow}else{follow}</button>
 	</div>
 </div>
 <hr/>
 <div class="row-fluid marketing">
+	<div class="span6">
 	<h4>Commit</h4>
-	<div class="span12">
+	
 	@for(commit <- project.getCommits())	{
 		<div class="row">
 			<div class="span8">
@@ -37,6 +38,12 @@
 			</div>
 		</div>
 	}
+	</div>
+	
+	<div class="span6">
+	<h4>Features</h4>
+	
+	<p> Soon you will get here all features proposed by the community ! </p>
 	</div>
 </div>
 }
