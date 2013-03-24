@@ -44,6 +44,13 @@ function validateForm()	{
 	}
 }
 
+
+function validateFormB()	{
+	if($("#descriptionAreaB").val().length > 0)	{
+		$("#githubb").removeAttr("disabled");
+	}
+}
+
 function contribute()	{
 	jqxhrGithub = $.post("/contribute", {"id" : $("#id").val()}, function(data) {
 		if (data.status == "success") {
